@@ -1,4 +1,4 @@
-## Getting Started
+## Introduction
 
 This is an Expense Tracker web application built with Next.js, enabling users to manage their expenses seamlessly both online and offline.
 
