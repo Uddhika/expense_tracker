@@ -8,7 +8,7 @@ API tests are implemented using Jest, and the code is formatted with Prettier fo
 
 ![Expense Tracker UI](./screenshots/overview.png)
 
-## Refer to the screenshots folder for additional interface previews and application behaviors
+## Please refer to the screenshots folder for additional interface details, including operational workflows and UI behaviors.
 
 ## Functionalities
 
