@@ -55,7 +55,9 @@ export default function ExpenseForm({ expense, onCancel }: ExpenseFormProps) {
       await dispatch(updateExpenseAsync(newExpense));
     } else {
       await dispatch(addExpenseAsync(newExpense));
-      dispatch(fetchExpenses({ page: currentPage, pageSize: 5 }));
+      dispatch(
+        fetchExpenses({ page: currentPage, pageSize: 5, selectedCategory: '' })
+      );
     }
     form.resetFields();
     onCancel?.();

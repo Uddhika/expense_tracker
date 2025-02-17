@@ -18,7 +18,7 @@ export default function Home() {
       setIsOnline(true);
       setShowOnlineMessage(true);
       dispatch(syncPendingActions());
-      dispatch(fetchExpenses({ page: 1, pageSize: 5 }));
+      dispatch(fetchExpenses({ page: 1, pageSize: 5, selectedCategory: '' }));
       setTimeout(() => setShowOnlineMessage(false), 3000);
     };
 

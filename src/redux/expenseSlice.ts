@@ -29,7 +29,11 @@ const initialState: ExpenseState = {
 export const fetchExpenses = createAsyncThunk(
   'expenses/fetchExpenses',
   async (
-    { page, pageSize }: { page: number; pageSize: number },
+    {
+      page,
+      pageSize,
+      selectedCategory,
+    }: { page: number; pageSize: number; selectedCategory: string },
     { rejectWithValue, getState }
   ) => {
     const state = getState() as RootState;
@@ -37,7 +41,11 @@ export const fetchExpenses = createAsyncThunk(
     if (navigator.onLine) {
       // App is online
       try {
-        const response = await mockApi.fetchExpenses(page, pageSize);
+        const response = await mockApi.fetchExpenses(
+          page,
+          pageSize,
+          selectedCategory
+        );
         return response;
       } catch (error) {
         return rejectWithValue('Failed to fetch expenses from API');
@@ -47,7 +55,12 @@ export const fetchExpenses = createAsyncThunk(
       const storedExpenses = localStorage.getItem('tempexpenses');
       if (storedExpenses) {
         const expenses = JSON.parse(storedExpenses);
-        return { data: expenses, total: expenses.length };
+        const filteredExpenses = selectedCategory
+          ? expenses.filter(
+              (exp: { category: string }) => exp.category === selectedCategory
+            )
+          : expenses;
+        return { data: filteredExpenses, total: filteredExpenses.length };
       } else {
         return rejectWithValue('No expenses found in localStorage');
       }
@@ -65,7 +78,7 @@ export const addExpenseAsync = createAsyncThunk(
         // Re-fetch expenses after adding a new record
         const state = getState() as RootState;
         const { page, pageSize } = state.expenses;
-        dispatch(fetchExpenses({ page, pageSize }));
+        dispatch(fetchExpenses({ page, pageSize, selectedCategory: '' }));
       } else {
         console.log('App is offline, adding to pending actions:', expense);
         dispatch(addPendingAction({ type: 'add', payload: expense }));

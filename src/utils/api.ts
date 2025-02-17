@@ -10,16 +10,23 @@ export interface Expense {
 const mockApi = {
   fetchExpenses: async (
     page: number = 1,
-    pageSize: number = 5
+    pageSize: number = 5,
+    selectedCategory: string
   ): Promise<{ data: Expense[]; total: number }> => {
     return new Promise<{ data: Expense[]; total: number }>((resolve) => {
       setTimeout(() => {
         const allExpenses: Expense[] = JSON.parse(
           localStorage.getItem('expenses') || '[]'
         );
-        const total = allExpenses.length;
-        const startIndex = (page - 1) * pageSize;
-        const paginatedExpenses = allExpenses.slice(
+        const filteredExpenses = selectedCategory
+          ? allExpenses.filter(
+              (expense) => expense.category === selectedCategory
+            )
+          : allExpenses;
+        const total = filteredExpenses.length;
+        const adjustedPage = selectedCategory && page > 1 ? 1 : page;
+        const startIndex = (adjustedPage - 1) * pageSize;
+        const paginatedExpenses = filteredExpenses.slice(
           startIndex,
           startIndex + pageSize
         );

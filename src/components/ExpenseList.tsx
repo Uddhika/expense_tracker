@@ -84,7 +84,9 @@ export default function ExpenseList({ selectedCategory }: ExpenseListProps) {
             onConfirm={async () => {
               await dispatch(deleteExpenseAsync(record.id));
               setCurrentPage(1);
-              dispatch(fetchExpenses({ page: 1, pageSize: 5 }));
+              dispatch(
+                fetchExpenses({ page: 1, pageSize: 5, selectedCategory })
+              );
             }}
           >
             <Button danger>Delete</Button>
@@ -94,11 +96,11 @@ export default function ExpenseList({ selectedCategory }: ExpenseListProps) {
     },
   ];
 
-  const filteredExpenses = selectedCategory
-    ? expenses.filter((exp) => exp.category === selectedCategory)
-    : expenses;
+  // const filteredExpenses = selectedCategory
+  //   ? expenses.filter((exp) => exp.category === selectedCategory)
+  //   : expenses;
 
-  const data: DataType[] = filteredExpenses.map((exp) => ({
+  const data: DataType[] = expenses.map((exp) => ({
     key: exp.id,
     id: exp.id,
     title: exp.title,
@@ -109,12 +111,14 @@ export default function ExpenseList({ selectedCategory }: ExpenseListProps) {
   }));
 
   useEffect(() => {
-    dispatch(fetchExpenses({ page: currentPage, pageSize }));
-  }, [dispatch, currentPage]);
+    dispatch(fetchExpenses({ page: currentPage, pageSize, selectedCategory }));
+  }, [dispatch, currentPage, selectedCategory]);
 
   const handleTableChange = (pagination: any) => {
     setCurrentPage(pagination.current);
-    dispatch(fetchExpenses({ page: pagination.current, pageSize }));
+    dispatch(
+      fetchExpenses({ page: pagination.current, pageSize, selectedCategory })
+    );
   };
 
   const paginationConfig = {

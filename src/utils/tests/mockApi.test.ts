@@ -38,7 +38,7 @@ describe('mockApi', () => {
       JSON.stringify(expenseData)
     );
 
-    const result = await mockApi.fetchExpenses(1, 2);
+    const result = await mockApi.fetchExpenses(1, 2, '');
 
     expect(result.data).toEqual(expenseData);
     expect(result.total).toBe(2);
